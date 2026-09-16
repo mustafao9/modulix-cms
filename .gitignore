@@ -1,0 +1,9 @@
+/vendor/
+/.env
+/storage/releases/
+/storage/backups/
+/releases/
+/backups/
+/core/installed.lock
+.DS_Store
+error.log
