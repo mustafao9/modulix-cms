@@ -171,30 +171,6 @@ class AdminController extends Controller {
         $this->view('dosya-izinleri', ['dosyalar' => $dosyalar], 'Admin');
     }
 
-    public function dosyaIzinleriniDuzelt() {
-        $hedefIzinler = [
-            __DIR__ . '/../../../.env' => 0644,
-            __DIR__ . '/../../../core/installed.lock' => 0644,
-            __DIR__ . '/../../../modules' => 0755,
-            __DIR__ . '/../../../public' => 0755,
-            __DIR__ . '/../../../storage' => 0755
-        ];
-        $basarili = true;
-        foreach ($hedefIzinler as $yol => $izin) {
-            if (file_exists($yol)) {
-                if (!@chmod($yol, $izin)) { $basarili = false; }
-            }
-        }
-        if ($basarili) {
-            Oturum::mesajYaz('basari', 'Tüm kritik dosya ve dizin izinleri başarıyla 644/755 standartlarına onarıldı.');
-            Audit::kaydet('Dosya İzinleri Otomatik Onarıldı (CHMOD)');
-        } else {
-            Oturum::mesajYaz('hata', 'Bazı dosya izinleri değiştirilemedi.');
-        }
-        $baseUrl = Env::al('APP_URL', rtrim(dirname($_SERVER['SCRIPT_NAME']), '/'));
-        header("Location: " . rtrim($baseUrl, '/') . '/yonetim/dosya-izinleri'); exit;
-    }
-
     public function hataLoglari() {
         $m = $this->model('AdminModel', 'Admin');
         $this->view('hata-loglari', ['loglar' => $m->hataLoglariniOku()], 'Admin');

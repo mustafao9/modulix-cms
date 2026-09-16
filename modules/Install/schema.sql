@@ -1,6 +1,6 @@
 -- Modulix-CMS Clean Release Schema
--- Version: v1.0.4
--- Generated: 2026-09-15 21:12:06
+-- Version: v1.0.3
+-- Generated: 2026-09-15 21:06:24
 
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -32,7 +32,7 @@ CREATE TABLE `blog_yazilari` (
   `icerik` text NOT NULL,
   `tarih` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `guvenlik_engellenen_ipler`;
 CREATE TABLE `guvenlik_engellenen_ipler` (
@@ -42,7 +42,7 @@ CREATE TABLE `guvenlik_engellenen_ipler` (
   `tarih` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `ip` (`ip`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `guvenlik_saldirilari`;
 CREATE TABLE `guvenlik_saldirilari` (
@@ -52,7 +52,7 @@ CREATE TABLE `guvenlik_saldirilari` (
   `saldiri_turu` varchar(255) NOT NULL,
   `tarih` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `ip_engelleri`;
 CREATE TABLE `ip_engelleri` (
@@ -71,7 +71,7 @@ CREATE TABLE `kategoriler` (
   `aciklama` text DEFAULT NULL,
   `dil` varchar(5) DEFAULT 'tr',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `kullanicilar`;
 CREATE TABLE `kullanicilar` (
@@ -94,7 +94,7 @@ CREATE TABLE `kullanicilar` (
   UNIQUE KEY `kullanici_adi` (`kullanici_adi`),
   UNIQUE KEY `eposta` (`eposta`),
   UNIQUE KEY `google_id` (`google_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `medya`;
 CREATE TABLE `medya` (
@@ -137,7 +137,7 @@ CREATE TABLE `sayfalar` (
   `dil` varchar(5) DEFAULT 'tr',
   `olusturma_tarihi` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS `sistem_ayarlar`;
 CREATE TABLE `sistem_ayarlar` (
@@ -146,7 +146,7 @@ CREATE TABLE `sistem_ayarlar` (
   `deger` text DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `anahtar` (`anahtar`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `sistem_loglari`;
 CREATE TABLE `sistem_loglari` (
@@ -172,6 +172,6 @@ CREATE TABLE `yazilar` (
   `okunma` int(11) DEFAULT 0,
   `olusturma_tarihi` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 SET FOREIGN_KEY_CHECKS = 1;

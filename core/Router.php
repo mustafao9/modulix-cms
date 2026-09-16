@@ -6,40 +6,28 @@ class Router {
         self::$rotalar[strtoupper($method)][trim($path, '/')] = $callback;
     }
 
-    public static function calistir($method = null, $path = null) {
-        $method = $method ?? strtoupper($_SERVER['REQUEST_METHOD']);
+    public static function calistir() {
+        $scriptName = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
+        $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         
-        if ($path === null) {
-            $uri = $_GET['url'] ?? '';
-            $path = trim($uri, '/');
-        }
-        
-        if ($path === '' || $path === 'public') {
-            $path = 'giris';
-        }
+        $path = str_replace($scriptName, '', $requestUri);
+        $path = trim($path, '/');
+        $method = strtoupper($_SERVER['REQUEST_METHOD']);
 
-        // İstek POST ise ve doğrudan bulunamadıysa, form işlemlerini desteklemek için esneklik sağla
-        $arananMethodlar = [$method];
-        if ($method === 'POST') {
-            $arananMethodlar[] = 'GET'; // Geçici tolerans
-        }
+        if (isset(self::$rotalar[$method])) {
+            foreach (self::$rotalar[$method] as $rota => $callback) {
+                $rotaDesen = preg_replace('/\{[a-zA-Z0-9_]+\}/', '([a-zA-Z0-9_]+)', $rota);
+                $rotaDesen = "#^" . $rotaDesen . "$#";
 
-        foreach ($arananMethodlar as $m) {
-            if (isset(self::$rotalar[$m])) {
-                foreach (self::$rotalar[$m] as $rota => $callback) {
-                    $rotaDesen = preg_replace('/\{[a-zA-Z0-9_]+\}/', '([a-zA-Z0-9_]+)', $rota);
-                    $rotaDesen = "#^" . $rotaDesen . "$#";
-
-                    if (preg_match($rotaDesen, $path, $matches)) {
-                        array_shift($matches);
-                        if (is_array($callback)) {
-                            $controllerName = $callback[0];
-                            $actionName = $callback[1];
-                            if (class_exists($controllerName)) {
-                                $controller = new $controllerName();
-                                if (method_exists($controller, $actionName)) {
-                                    return call_user_func_array([$controller, $actionName], $matches);
-                                }
+                if (preg_match($rotaDesen, $path, $matches)) {
+                    array_shift($matches);
+                    if (is_array($callback)) {
+                        $controllerName = $callback[0];
+                        $actionName = $callback[1];
+                        if (class_exists($controllerName)) {
+                            $controller = new $controllerName();
+                            if (method_exists($controller, $actionName)) {
+                                return call_user_func_array([$controller, $actionName], $matches);
                             }
                         }
                     }
@@ -51,7 +39,6 @@ class Router {
         echo "<div style='font-family:sans-serif; text-align:center; margin-top:100px;'>";
         echo "<h2 style='color:#dc2626;'>404 - Sayfa Bulunamadı</h2>";
         echo "<p>Rota: <b>" . htmlspecialchars($path) . "</b></p>";
-        echo "<p style='color:#666; font-size:13px;'>Method: {$method}</p>";
         echo "</div>";
     }
 }
